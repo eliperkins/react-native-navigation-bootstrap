@@ -9,17 +9,16 @@ import {
   AppRegistry,
   StyleSheet,
   Text,
-  View
+  TouchableOpacity,
+  View,
 } from 'react-native';
-import {Navigation} from 'react-native-navigation';
+import { Navigation } from 'react-native-navigation';
 
 class react_native_navigation_bootstrap extends Component {
   render() {
     return (
       <View style={styles.container}>
-        <Text style={styles.welcome}>
-          Welcome to React Native!
-        </Text>
+        <Text style={styles.welcome}>Welcome to React Native!</Text>
         <Text style={styles.instructions}>
           To get started, edit index.ios.js
         </Text>
@@ -49,12 +48,47 @@ const styles = StyleSheet.create({
     color: '#333333',
     marginBottom: 5,
   },
+  button: {
+    overflow: 'hidden',
+    width: 34,
+    height: 34,
+    borderRadius: 34 / 2,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
 });
 
-Navigation.registerComponent('react-native-navigation-bootstrap', () => react_native_navigation_bootstrap);
+const CustomButton = ({ text }) =>
+  <TouchableOpacity
+    style={[styles.button, { backgroundColor: 'tomato' }]}
+    onPress={() => console.log('pressed me!')}
+  >
+    <View style={styles.button}>
+      <Text style={{ color: 'white' }}>
+        {text}
+      </Text>
+    </View>
+  </TouchableOpacity>;
+
+Navigation.registerComponent(
+  'react-native-navigation-bootstrap',
+  () => react_native_navigation_bootstrap,
+);
+Navigation.registerComponent('CustomButton', () => CustomButton);
 Navigation.startSingleScreenApp({
   screen: {
     screen: 'react-native-navigation-bootstrap',
-    title: 'Navigation Bootstrap'
-  }
+    title: 'Navigation Bootstrap',
+    navigatorButtons: {
+      leftButtons: [
+        {
+          id: 'custom',
+          component: 'CustomButton',
+          passProps: {
+            text: 'Wow',
+          },
+        },
+      ],
+    },
+  },
 });
